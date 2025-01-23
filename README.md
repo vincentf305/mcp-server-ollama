@@ -19,5 +19,5 @@ docker run -p 8000:8000 mcp-server-ollama
 ## Testing
 
 ```bash
-pytest tests/
+pytest -v test_server.py -s
 ```

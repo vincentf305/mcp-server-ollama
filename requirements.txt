@@ -7,3 +7,4 @@ requests==2.31.0
 pytest==7.4.4
 pytest-asyncio==0.23.3
 aiohttp==3.9.1
+pydantic-settings==2.2.1
