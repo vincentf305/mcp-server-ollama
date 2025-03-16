@@ -46,12 +46,12 @@ def serve() -> Server:
 
             if name == "ask-ollama":
                 logger.info(f"Calling tool: {name} with arguments: {arguments}")
-                query=arguments["query"],
-                model=arguments.get("model", settings.model_name),
-                temperature=arguments.get("temperature", 0.7),
+                query=arguments["query"]
+                model=arguments.get("model", settings.model_name)
+                temperature=arguments.get("temperature", 0.7)
                 max_tokens=arguments.get("max_tokens", 500)
 
-                async with httpx.AsyncClient() as client:
+                async with httpx.AsyncClient(verify=False) as client:
                     ollama_request =  {
                         "model": model,
                         "messages":  [{"role": "user","content": query}],
@@ -59,6 +59,7 @@ def serve() -> Server:
                         "temperature": temperature,
                         "max_tokens": max_tokens    
                     }
+                    logger.debug(f"Ollama request: {ollama_request}")
                     response = await client.post(
                         f"{settings.ollama_base_url}/api/chat",
                         json=ollama_request,
@@ -69,7 +70,7 @@ def serve() -> Server:
                 logger.info(f"Ollama response: {data}")
                 chat_response = data["message"]["content"]
                 
-                return [types.TextContent(type="text", text=f"Ollama Response:\n{chat_response.content}")]
+                return [types.TextContent(type="text", text=f"Ollama Response:\n{chat_response}")]
 
             raise ValueError(f"Unknown tool: {name}")
         except Exception as e:

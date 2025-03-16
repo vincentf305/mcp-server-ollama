@@ -9,14 +9,6 @@ A Model Control Protocol server that allows Claude Desktop to communicate with O
 3. Install dependencies: `pip install -r requirements.txt`
 4. Run server: `python -m src.mcp_server.server`
 
-## Docker
-
-### Building and Running
-
-```bash
-docker build -t mcp-server-ollama .
-```
-
 ### Using with Claude Desktop
 
 Edit the `claude_desktop_config.json` file with the following content:
@@ -25,8 +17,11 @@ Edit the `claude_desktop_config.json` file with the following content:
 {
   "mcpServers": {
     "ollama-server": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "mcp-server-ollama"]
+      "command": "python",
+      "args": ["-m", "src.mcp_server.server"],
+      "env": {
+        "PYTHONPATH": "path-to-mcp-server"
+      }
     }
   }
 }
